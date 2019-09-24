@@ -4,7 +4,7 @@
       text-center
       wrap
     >
-      
+      <h1>Titre</h1>
     </v-layout>
   </v-container>
 </template>
@@ -24,7 +24,7 @@ export default {
       {
         text: 'awesome-vuetify',
         href: 'https://github.com/vuetifyjs/awesome-vuetify',
-      },
+      }
     ],
     importantLinks: [
       {
@@ -46,7 +46,7 @@ export default {
       {
         text: 'Articles',
         href: 'https://medium.com/vuetify',
-      },
+      }
     ],
     whatsNext: [
       {
@@ -60,8 +60,8 @@ export default {
       {
         text: 'Frequently Asked Questions',
         href: 'https://vuetifyjs.com/getting-started/frequently-asked-questions',
-      },
-    ],
-  }),
-};
+      }
+    ]
+  })
+}
 </script>
