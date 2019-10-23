@@ -23,6 +23,9 @@ app.use(morgan('dev'))
 app.use(bodyParser.json())
 app.use(cors())
 
+const path = require('path')
+app.use(express.static(path.join(__dirname, 'dist/')))
+
 const users = [{
   username: 'admin',
   password: 'changethispassword'

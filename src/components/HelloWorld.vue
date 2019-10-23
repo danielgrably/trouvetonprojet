@@ -4,7 +4,8 @@
       text-center
       wrap
     >
-      <h1>Titre</h1>
+      <h1 style="text-align: center">
+        Page d'accueil</h1>
     </v-layout>
   </v-container>
 </template>
