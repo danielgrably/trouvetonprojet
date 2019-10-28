@@ -5,8 +5,8 @@
         <span>Trouve ton projet</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn class="mr-5 cyan with white--text">Inscription</v-btn>
-      <v-btn class="cyan with white--text">Connexion</v-btn>
+      <Inscription/>
+      <Connexion/>
     </v-app-bar>
 
     <v-content>
@@ -19,12 +19,16 @@
 <script>
 import Welcome from './components/Welcome'
 import Login from './components/Login'
+import Inscription from './components/Inscription'
+import Connexion from './components/Connexion'
 
 export default {
   name: 'App',
   components: {
     Login,
-    Welcome
+    Welcome,
+    Inscription,
+    Connexion
   },
   data: () => ({
     //
