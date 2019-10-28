@@ -8,7 +8,7 @@
       <v-btn class="cyan with white--text">Inscription</v-btn>
       <v-btn class="cyan with white--text">Connexion</v-btn>
     </v-app-bar>
-
+  
     <v-content>
       <Welcome/>
       <Login/>
