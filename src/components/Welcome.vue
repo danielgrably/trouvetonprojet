@@ -37,7 +37,7 @@ export default {
         'green darken-2',
         'red lighten-1'
       ],
-      slides: ['Un répertoire de PST', 'Des PST intéressants', 'Adaptés à tes goûts']
+      slides: ['Un répertoire de PST intéressants', 'Des projets que tu proposes', 'Adaptés à tes goûts']
     }
   }
 }
