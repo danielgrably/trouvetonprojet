@@ -5,11 +5,12 @@
         <span>Trouve ton projet</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <Inscription/>
+      <Connexion/>
       <Connexion/>
     </v-app-bar>
 
     <v-content>
+      <Navbar/>
       <Welcome/>
       <Login/>
     </v-content>
@@ -21,6 +22,8 @@ import Welcome from './components/Welcome'
 import Login from './components/Login'
 import Inscription from './components/Inscription'
 import Connexion from './components/Connexion'
+import Informations from './components/Informations'
+import Navbar from './components/Navbar'
 
 export default {
   name: 'App',
@@ -28,7 +31,9 @@ export default {
     Login,
     Welcome,
     Inscription,
-    Connexion
+    Connexion,
+    Informations,
+    Navbar
   },
   data: () => ({
     //
