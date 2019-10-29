@@ -51,6 +51,9 @@ app.post('/api/login', (req, res) => {
     const user = users.find(u => u.username === req.body.username && u.password === req.body.password)
     if (!user) {
       // gérez le cas où on n'a pas trouvé d'utilisateur correspondant
+      res.json({
+        message: 'cannot find user'
+      })
     } else {
       // connect the user
       req.session.userId = 1000 // connect the user, and change the id
