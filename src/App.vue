@@ -10,6 +10,7 @@
     </v-app-bar>
 
     <v-content>
+      <Navbar/>
       <Welcome/>
       <v-overlay
             :value="signinOverlay"

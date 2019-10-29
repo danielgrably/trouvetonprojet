@@ -13,7 +13,7 @@
                 :counter="20"
                 :rules="idRules"
                 label="Identifiant"
-                name="name"
+                name="identifiant"
                 required
               ></v-text-field>
 
@@ -22,7 +22,7 @@
                 v-model="mdp"
                 :rules="mdpRules"
                 label="Mot de passe"
-                name="password"
+                name="mdp"
                 required
               ></v-text-field>
             </v-form>
@@ -43,7 +43,7 @@ export default {
     identifiant: '',
     idRules: [
       v => !!v || 'Ce champ est obligatoire',
-      v => (v && v.length <= 20) || 'Le nom doit faire moins de 20 caractÃ¨res'
+      v => (v && v.length <= 20) || 'Le nom doit faire moins de 20 caractères'
     ],
     mdp: '',
     mdpRules: [v => !!v || 'Ce champ est obligatoire'],
