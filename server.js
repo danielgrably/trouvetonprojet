@@ -13,18 +13,22 @@ const session = require('express-session')
 
 const app = express()
 
+// ces lignes (cors) sont importantes pour les sessions dans la version de développement
+app.use(cors({
+  credentials: true,
+  origin: 'http://localhost:8080'
+}))
 app.use(session({
-  secret: 'blablabla', // changez cette valeur
+  secret: 'secret123', // changez cette valeur
   resave: false,
   saveUninitialized: true,
   cookie: { secure: false } // ne changez que si vous avez activé le https
 }))
 app.use(morgan('dev'))
 app.use(bodyParser.json())
-app.use(cors())
 
 const path = require('path')
-app.use(express.static(path.join(__dirname, 'dist/')))
+app.use(express.static(path.join(__dirname, '/dist')))
 
 const users = [{
   username: 'admin',
@@ -35,12 +39,13 @@ app.post('/api/login', (req, res) => {
   console.log('req.body', req.body)
   console.log('req.query', req.query)
   if (!req.session.userId) {
-    const user = users.find(u => u.username === req.body.username && u.password === req.body.password)
+    const user = users.find(u => u.username === req.body.login && u.password === req.body.password)
     if (!user) {
-      res.json({
-        message: 'not connected'
-      })
       // gérez le cas où on n'a pas trouvé d'utilisateur correspondant
+      //res.status(401)
+      res.json({
+        message: 'uknown login and pass'
+      })
     } else {
       // connect the user
       req.session.userId = 1000 // connect the user, and change the id
@@ -49,7 +54,7 @@ app.post('/api/login', (req, res) => {
       })
     }
   } else {
-    res.status(401)
+    //res.status(401) 
     res.json({
       message: 'you are already connected'
     })
