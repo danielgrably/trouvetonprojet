@@ -2,12 +2,13 @@
   <v-container>
     <v-card>
           <v-toolbar dark color="blue">
-          <v-toolbar-title>Formulaire de connexion {{testmessage}}</v-toolbar-title>
+          <v-toolbar-title>Formulaire de connexion</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-btn icon @click="hide"><v-icon>mdi-close</v-icon></v-btn>
         </v-toolbar>
           <v-card-text >
             <v-form ref="form" id="signin" v-model="valid" lazy-validation>
+              <v-label class="red" ><font color="red">{{message}}</font></v-label>
               <v-text-field
                 v-model="identifiant"
                 :counter="20"
@@ -47,7 +48,7 @@ export default {
     ],
     mdp: '',
     mdpRules: [v => !!v || 'Ce champ est obligatoire'],
-    testmessage: ''
+    message: ''
   }),
 
   methods: {
@@ -60,7 +61,14 @@ export default {
         })
           .then((response) => {
             console.log('response : ', response.data)
-            this.testmessage = response.data.message
+            if (response.data.message === 'connected' || response.data.message === 'already connected') {
+              this.message = ''
+              this.$emit('connect', true)
+              this.hide()
+            }
+            else {
+              this.message = 'Login ou mot de passe incorrects.'
+            }
           })
       }
     },

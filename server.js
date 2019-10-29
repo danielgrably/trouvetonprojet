@@ -42,7 +42,7 @@ app.post('/api/login', (req, res) => {
     const user = users.find(u => u.username === req.body.login && u.password === req.body.password)
     if (!user) {
       // gérez le cas où on n'a pas trouvé d'utilisateur correspondant
-      //res.status(401)
+      // res.status(401)
       res.json({
         message: 'uknown login and pass'
       })
@@ -54,23 +54,23 @@ app.post('/api/login', (req, res) => {
       })
     }
   } else {
-    //res.status(401) 
+    // res.status(401) 
     res.json({
-      message: 'you are already connected'
+      message: 'already connected'
     })
   }
 })
 
 app.get('/api/logout', (req, res) => {
   if (!req.session.userId) {
-    res.status(401)
+    // res.status(401)
     res.json({
-      message: 'you are already disconnected'
+      message: 'already disconnected'
     })
   } else {
     req.session.userId = 0
     res.json({
-      message: 'you are now disconnected'
+      message: 'disconnected'
     })
   }
 })
