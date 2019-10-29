@@ -44,7 +44,7 @@ app.post('/api/login', (req, res) => {
       // gérez le cas où on n'a pas trouvé d'utilisateur correspondant
       // res.status(401)
       res.json({
-        message: 'uknown login and pass'
+        message: 'unknown login and pass'
       })
     } else {
       // connect the user
@@ -55,6 +55,30 @@ app.post('/api/login', (req, res) => {
     }
   } else {
     // res.status(401) 
+    res.json({
+      message: 'already connected'
+    })
+  }
+})
+
+app.post('/api/newaccount', (req, res) => {
+  console.log('req.body', req.body)
+  console.log('req.query', req.query)
+  if (!req.session.userId) {
+    const user = users.find(u => u.username === req.body.login && u.password === req.body.password)
+    if (!user) {
+      // Le compte n'existe pas
+      users.push({ username: req.body.login, password: req.body.password })
+      res.json({
+        message: 'account created'
+      })
+    } else {
+      // Le compte existe déjà
+      res.json({
+        message: 'account already exists'
+      })
+    }
+  } else {
     res.json({
       message: 'already connected'
     })
