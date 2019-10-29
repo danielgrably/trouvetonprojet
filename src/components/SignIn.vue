@@ -65,8 +65,7 @@ export default {
               this.message = ''
               this.$emit('connect', true)
               this.hide()
-            }
-            else {
+            } else {
               this.message = 'Login ou mot de passe incorrects.'
             }
           })

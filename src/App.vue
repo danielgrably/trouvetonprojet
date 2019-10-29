@@ -32,7 +32,6 @@
 import Welcome from './components/Welcome'
 import SignIn from './components/SignIn'
 import SignUp from './components/SignUp'
-
 export default {
   name: 'App',
   components: {
@@ -45,7 +44,6 @@ export default {
     signupOverlay: false,
     connected: false
   }),
-
   methods: {
     showSignIn () {
       this.signinOverlay = true

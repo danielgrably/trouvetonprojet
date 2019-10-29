@@ -12,7 +12,7 @@
       </v-carousel>
     </v-layout>
     <v-layout row wrap align-center justify-center class="mt-5">
-      <h1>TROUVE TON PROJET grâce ce site web inédit !</h1>
+      <h1>TROUVE TON PROJET grâce à ce site web inédit !</h1>
     </v-layout>
     <v-layout row wrap align-center justify-center class="mt-5">
       Nos algorithmes de matching de projet te proposeront les projets qui correspondent à ton profil ! Trouveras-tu ton projet coup de coeur ?
