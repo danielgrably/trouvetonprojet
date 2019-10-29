@@ -61,15 +61,32 @@ export default {
       console.log('connection status ok')
       this.connected = value
     },
+    // Envoie une requête de déconnexion au serveur
     disconnect () {
       this.axios.get('http://localhost:4000/api/logout')
         .then((response) => {
-          console.log('response : ', response.data)
           if (response.data.message === 'disconnected' || response.data.message === 'already disconnected') {
             this.setConnectionStatus(false)
           }
         })
+    },
+    // Envoie une requête au serveur pour savoir si on est déjà connecté
+    updateConnectionStatus () {
+      this.axios.post('http://localhost:4000/api/login', {
+        login: '',
+        password: ''
+      })
+        .then((response) => {
+          if (response.data.message === 'already connected') {
+            this.setConnectionStatus(true)
+          }
+        })
     }
+  },
+
+  // Lors du chargement de la page, on vérifie si on est déjà connecté
+  created: function () {
+    this.updateConnectionStatus()
   }
 }
 </script>

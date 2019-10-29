@@ -55,12 +55,12 @@ export default {
     validate () {
       if (this.$refs.form.validate()) {
         this.snackbar = true
+        // Envoie une requête POST au serveur avec les infos d'identification, puis si elles sont correctes envoie un event de connexion au parent
         this.axios.post('http://localhost:4000/api/login', {
           login: this.identifiant,
           password: this.mdp
         })
           .then((response) => {
-            console.log('response : ', response.data)
             if (response.data.message === 'connected' || response.data.message === 'already connected') {
               this.message = ''
               this.$emit('connect', true)
