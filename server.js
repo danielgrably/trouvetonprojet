@@ -28,21 +28,8 @@ app.use(express.static(path.join(__dirname, 'dist/')))
 
 const users = [{
   username: 'admin',
-  password: 'changethispassword'
+  password: '1234'
 }]
-
-app.get('/api/test', (req, res) => {
-  console.log('ce console.log est appelé au bon moment')
-  res.json([
-    {
-      title: 'truc',
-      content: 'machin'
-    }, {
-      title: 'truc2',
-      content: 'machin2'
-    }
-  ])
-})
 
 app.post('/api/login', (req, res) => {
   console.log('req.body', req.body)
@@ -50,6 +37,9 @@ app.post('/api/login', (req, res) => {
   if (!req.session.userId) {
     const user = users.find(u => u.username === req.body.username && u.password === req.body.password)
     if (!user) {
+      res.json({
+        message: 'not connected'
+      })
       // gérez le cas où on n'a pas trouvé d'utilisateur correspondant
     } else {
       // connect the user

@@ -12,12 +12,3 @@ new Vue({
   vuetify,
   render: h => h(App)
 }).$mount('#app')
-
-this.axios.post('https://localhost:4000/votreAPI', {
-  data: {
-    sivousavezdeschamps: 'rentrez les ici'
-  }
-})
-  .then((response) => {
-    console.log('response', response)
-  })

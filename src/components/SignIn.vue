@@ -2,12 +2,12 @@
   <v-container>
     <v-card>
           <v-toolbar dark color="blue">
-          <v-toolbar-title>Formulaire de connexion</v-toolbar-title>
+          <v-toolbar-title>Formulaire de connexion {{testmessage}}</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-btn icon @click="hide"><v-icon>mdi-close</v-icon></v-btn>
         </v-toolbar>
           <v-card-text >
-            <v-form ref="form" method="post" action="/api/login" id="signin" v-model="valid" lazy-validation>
+            <v-form ref="form" id="signin" v-model="valid" lazy-validation>
               <v-text-field
                 v-model="identifiant"
                 :counter="20"
@@ -35,6 +35,7 @@
 </template>
 
 <script>
+
 export default {
   data: () => ({
     absolute: true,
@@ -46,13 +47,21 @@ export default {
     ],
     mdp: '',
     mdpRules: [v => !!v || 'Ce champ est obligatoire'],
+    testmessage: ''
   }),
 
   methods: {
     validate () {
       if (this.$refs.form.validate()) {
         this.snackbar = true
-        signin.submit()
+        this.axios.post('http://localhost:4000/api/login', {
+          username: this.identifiant,
+          password: this.mdp
+        })
+          .then((response) => {
+            console.log('response : ', response.data)
+            this.testmessage = response.data.message
+          })
       }
     },
     resetValidation () {
