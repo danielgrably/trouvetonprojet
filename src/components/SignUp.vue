@@ -83,7 +83,6 @@ export default {
           password: this.mdp
         })
           .then((response) => {
-            console.log('response : ', response.data)
             if (response.data.message === 'account created') {
               this.message = ''
               this.hide()
