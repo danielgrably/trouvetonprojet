@@ -27,6 +27,7 @@
 import Informations from './Informations'
 
 export default {
+  name: 'Welcome',
   components: {
     Informations
   },

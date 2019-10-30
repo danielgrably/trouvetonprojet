@@ -63,7 +63,7 @@ export default {
           .then((response) => {
             if (response.data.message === 'connected' || response.data.message === 'already connected') {
               this.message = ''
-              this.$emit('connect', true)
+              this.$emit('connect', true, response.data.username)
               this.hide()
             } else {
               this.message = 'Login ou mot de passe incorrects.'

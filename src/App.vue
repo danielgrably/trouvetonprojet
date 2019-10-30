@@ -5,15 +5,15 @@
         <span>Trouve ton projet</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn v-if="connected" class="mr-5 cyan with white--text" >Mon compte</v-btn>
+      <v-btn v-if="connected" class="mr-5 cyan with white--text" >Mon Compte</v-btn>
       <v-btn v-else class="mr-5 cyan with white--text" @click="showSignUp">Inscription</v-btn>
       <v-btn v-if="connected" class="cyan with white--text" @click="disconnect">Déconnexion</v-btn>
-      <v-btn v-else class="cyan with white--text" @click="showSignIn">Connexion</v-btn>
+      <v-btn v-else class="cyan with white--text" @click="showSignIn">Connexion</v-btn>    
     </v-app-bar>
-
     <v-content>
-      <v-label v-if="connected">Connecté</v-label>
-      <Welcome v-else/>
+      <transition name="moveRight">
+        <router-view :username="username"/>
+      </transition>
       <v-overlay
             :value="signinOverlay"
           >
@@ -29,20 +29,21 @@
 </template>
 
 <script>
-import Welcome from './components/Welcome'
+// import Welcome from './components/Welcome'
 import SignIn from './components/SignIn'
 import SignUp from './components/SignUp'
 export default {
   name: 'App',
   components: {
-    Welcome,
+    // Welcome,
     SignIn,
     SignUp
   },
   data: () => ({
     signinOverlay: false,
     signupOverlay: false,
-    connected: false
+    connected: false,
+    username: ''
   }),
   methods: {
     showSignIn () {
@@ -57,9 +58,15 @@ export default {
     hideSignUp () {
       this.signupOverlay = false
     },
-    setConnectionStatus (value) {
-      console.log('connection status ok')
+    setConnectionStatus (value, username) {
       this.connected = value
+      if (value === true) {
+        this.$router.push('Home')
+        this.username = username
+      } else {
+        this.$router.push('Welcome')
+        this.username = ''
+      }
     },
     // Envoie une requête de déconnexion au serveur
     disconnect () {
@@ -78,7 +85,7 @@ export default {
       })
         .then((response) => {
           if (response.data.message === 'already connected') {
-            this.setConnectionStatus(true)
+            this.setConnectionStatus(true, response.data.username)
           }
         })
     }
@@ -90,3 +97,37 @@ export default {
   }
 }
 </script>
+
+<style>
+
+.moveRight-enter-active{
+  animation: fadeIn 1s ease-in;
+}
+@keyframes fadeIn{
+  0%{
+    opacity: 0;
+  }
+  33%{
+    opacity: 0;
+  }
+  66%{
+    opacity: 0.5;
+  }
+  100%{
+    opacity: 1;
+  }
+}
+
+.moveRight-leave-active{
+  animation: moveRight .3s ease-in;
+}
+
+@keyframes moveRight{
+ 0%{
+  transform: translateX(0);
+ }
+  100%{
+  transform: translateX(-1500px);
+ }
+}
+</style>

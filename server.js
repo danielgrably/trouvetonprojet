@@ -44,19 +44,23 @@ app.post('/api/login', (req, res) => {
       // gérez le cas où on n'a pas trouvé d'utilisateur correspondant
       // res.status(401)
       res.json({
-        message: 'unknown login and pass'
+        message: 'unknown login and pass',
+        username: ''
       })
     } else {
       // connect the user
       req.session.userId = 1000 // connect the user, and change the id
+      req.session.username = user.username
       res.json({
-        message: 'connected'
+        message: 'connected',
+        username: user.username
       })
     }
   } else {
     // res.status(401)
     res.json({
-      message: 'already connected'
+      message: 'already connected',
+      username: req.session.username
     })
   }
 })
