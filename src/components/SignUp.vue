@@ -14,7 +14,7 @@
                 :counter="20"
                 :rules="idRules"
                 label="Identifiant"
-                name="name"
+                name="Identifiant"
                 required
               ></v-text-field>
 
@@ -23,7 +23,7 @@
                 v-model="mdp"
                 :rules="mdpRules"
                 label="Mot de passe"
-                name="password"
+                name="mdp"
                 required
               ></v-text-field>
 
@@ -41,7 +41,7 @@
                 :items="filieres"
                 :rules="[v => !!v || 'Ce champ est obligatoire']"
                 label="Filière"
-                name="filliere"
+                name="filiere"
                 required
               ></v-select>
             </v-form>
@@ -86,8 +86,7 @@ export default {
             if (response.data.message === 'account created') {
               this.message = ''
               this.hide()
-            }
-            else {
+            } else {
               this.message = 'Le compte existe déjà.'
             }
           })

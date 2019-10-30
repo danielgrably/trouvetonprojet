@@ -25,3 +25,9 @@
       </article>
   </v-container>
 </template>
+
+<script>
+export default {
+  name: 'Informations'
+}
+</script>
