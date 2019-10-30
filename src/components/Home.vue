@@ -70,7 +70,7 @@
           </v-dialog>
         </v-toolbar>
       </template>
-      
+
       <template v-slot:no-data>
         <v-btn color="primary" @click="getProjects">Reset</v-btn>
       </template>
@@ -99,7 +99,7 @@ export default {
       { text: 'Créateur', value: 'creator' },
       { text: 'Classe', value: 'classe' },
       { text: 'Filière', value: 'filiere' },
-      { text: 'Description', value: 'description' },
+      { text: 'Description', value: 'description' }
     ],
     projects: [],
     editedIndex: -1,
@@ -162,7 +162,7 @@ export default {
     // Envoie une requête pour créer un projet sur le backend
     createProject (project) {
       console.log('createproject')
-      this.axios.post('http://localhost:4000/api/createproject', {
+      this.axios.post('/api/createproject', {
         name: project.name,
         classe: project.classe,
         creator: project.creator,
@@ -181,7 +181,7 @@ export default {
 
     getAccountInfo () {
       this.axios
-        .post('http://localhost:4000/api/login', {
+        .post('/api/login', {
           login: '',
           password: ''
         })
@@ -197,7 +197,7 @@ export default {
     // Récupère les projets depuis le backend
     getProjects () {
       console.log('apres ' + this.maClasse + this.maFiliere)
-      this.axios.post('http://localhost:4000/api/getprojects', {
+      this.axios.post('/api/getprojects', {
         data: {
           classe: this.maClasse,
           filiere: this.maFiliere

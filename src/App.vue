@@ -101,7 +101,7 @@ export default {
     },
     // Envoie une requête de déconnexion au serveur
     disconnect () {
-      this.axios.get('http://localhost:4000/api/logout')
+      this.axios.get('/api/logout')
         .then((response) => {
           if (response.data.message === 'disconnected' || response.data.message === 'already disconnected') {
             this.setConnectionStatus(false)
@@ -110,7 +110,7 @@ export default {
     },
     // Envoie une requête au serveur pour savoir si on est déjà connecté
     updateConnectionStatus () {
-      this.axios.post('http://localhost:4000/api/login', {
+      this.axios.post('/api/login', {
         login: '',
         password: ''
       })

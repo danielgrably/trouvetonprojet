@@ -86,7 +86,7 @@ export default {
 
     getAccountInfo () {
       this.axios
-        .post('http://localhost:4000/api/login', {
+        .post('/api/login', {
           login: '',
           password: ''
         })
@@ -100,7 +100,7 @@ export default {
     },
     validate () {
       this.axios
-        .post('http://localhost:4000/api/updateaccount', {
+        .post('/api/updateaccount', {
           login: this.username,
           password: this.password,
           newpassword: this.newpassword,
