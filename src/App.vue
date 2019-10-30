@@ -5,10 +5,11 @@
         <span>Trouve ton projet</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn v-if="connected" class="mr-5 cyan with white--text" >Mon Compte</v-btn>
+      <v-btn v-if="connected" class="mr-5 cyan with white--text" @click="showInfo" >Informations</v-btn>
+      <v-btn v-if="connected" class="mr-5 cyan with white--text" @click="showAccount">Mon Compte</v-btn>
       <v-btn v-else class="mr-5 cyan with white--text" @click="showSignUp">Inscription</v-btn>
       <v-btn v-if="connected" class="cyan with white--text" @click="disconnect">Déconnexion</v-btn>
-      <v-btn v-else class="cyan with white--text" @click="showSignIn">Connexion</v-btn>    
+      <v-btn v-else class="cyan with white--text" @click="showSignIn">Connexion</v-btn>
     </v-app-bar>
     <v-content>
       <transition name="moveRight">
@@ -24,6 +25,16 @@
           >
       <SignUp @hide="hideSignUp" @connect="setConnectionStatus"/>
       </v-overlay>
+      <v-overlay
+            :value="infoOverlay"
+          >
+      <Informations @hide="hideInfo" />
+      </v-overlay>
+      <v-overlay
+            :value="accountOverlay"
+          >
+      <Account @hide="hideAccount" />
+      </v-overlay>
     </v-content>
   </v-app>
 </template>
@@ -32,25 +43,44 @@
 // import Welcome from './components/Welcome'
 import SignIn from './components/SignIn'
 import SignUp from './components/SignUp'
+import Informations from './components/Informations'
+import Account from './components/Account'
+
 export default {
   name: 'App',
   components: {
     // Welcome,
     SignIn,
-    SignUp
+    SignUp,
+    Informations,
+    Account
   },
   data: () => ({
     signinOverlay: false,
     signupOverlay: false,
+    infoOverlay: false,
+    accountOverlay: false,
     connected: false,
     username: ''
   }),
   methods: {
+    showAccount () {
+      this.accountOverlay = true
+    },
+    showInfo () {
+      this.infoOverlay = true
+    },
     showSignIn () {
       this.signinOverlay = true
     },
     showSignUp () {
       this.signupOverlay = true
+    },
+    hideInfo () {
+      this.infoOverlay = false
+    },
+    hideAccount () {
+      this.accountOverlay = false
     },
     hideSignIn () {
       this.signinOverlay = false

@@ -80,7 +80,9 @@ export default {
         this.snackbar = true
         this.axios.post('http://localhost:4000/api/newaccount', {
           login: this.identifiant,
-          password: this.mdp
+          password: this.mdp,
+          classe: this.select1,
+          filiere: this.select2
         })
           .then((response) => {
             if (response.data.message === 'account created') {
