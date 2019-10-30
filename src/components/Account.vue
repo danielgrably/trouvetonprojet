@@ -80,6 +80,7 @@ export default {
   }),
   methods: {
     hide () {
+      this.getAccountInfo()
       this.$emit('hide')
     },
 
