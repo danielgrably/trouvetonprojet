@@ -36,7 +36,15 @@ const users = [{
   username: 'admin',
   password: '1234',
   classe: '4A',
-  filiere: 'SI'
+  filiere: 'SI',
+  isAdmin: true
+},
+{
+  username: 'user',
+  password: '1234',
+  classe: '5A',
+  filiere: 'SE',
+  isAdmin: false
 }]
 
 let projects = [
@@ -48,11 +56,25 @@ let projects = [
     filiere: 'SI'
   },
   {
-    name: 'Projet WEB 2',
-    creator: 'Teacher',
+    name: 'Projet WEB 5A',
+    creator: 'New Teacher',
     description: 'Building a website with modern tooling and understanding of front-end and back-end concepts\nFront-end technologies: HTML5, CSS3, Javascript (Vue.js)\nBack-end technologies: Node.js (Express)',
-    classe: '4A',
+    classe: '5A',
     filiere: 'SI'
+  },
+  {
+    name: 'Projet Arduino',
+    creator: 'Pierre',
+    description: 'Créer un petit réveil automatique.',
+    classe: '4A',
+    filiere: 'SE'
+  },
+  {
+    name: 'Projet Robotique',
+    creator: 'Marc',
+    description: 'Créer un robot autonome qui détecte des humains.',
+    classe: '5A',
+    filiere: 'SE'
   }
 ]
 
@@ -74,6 +96,11 @@ app.post('/api/login', (req, res) => {
       req.session.username = user.username
       req.session.classe = user.classe
       req.session.filiere = user.filiere
+      if (user.isAdmin) {
+        req.session.isAdmin = true
+      } else {
+        req.session.isAdmin = false
+      }
       res.json({
         message: 'connected',
         username: user.username,
@@ -99,7 +126,7 @@ app.post('/api/newaccount', (req, res) => {
     const user = users.find(u => u.username === req.body.login)
     if (!user) {
       // Le compte n'existe pas
-      users.push({ username: req.body.login, password: req.body.password, classe: req.body.classe, filiere: req.body.filiere })
+      users.push({ username: req.body.login, password: req.body.password, classe: req.body.classe, filiere: req.body.filiere, isAdmin: false })
       res.json({
         message: 'account created'
       })
@@ -141,6 +168,26 @@ app.post('/api/updateaccount', (req, res) => {
   }
 })
 
+app.post('/api/createproject', (req, res) => {
+  console.log('req.body', req.body)
+  if (req.session.userId) {
+    projects.push({
+      name: req.body.name,
+      creator: req.session.username,
+      description: req.body.description,
+      classe: req.body.classe,
+      filiere: req.body.filiere
+    })
+    res.json({
+      message: 'project created'
+    })
+  } else {
+    res.json({
+      message: 'not connected'
+    })
+  }
+})
+
 app.get('/api/logout', (req, res) => {
   if (!req.session.userId) {
     // res.status(401)
@@ -160,6 +207,7 @@ function getMatchingProjects (classe, filiere) {
   // Pour chaque projet dans la liste
   projects.forEach(project => {
     // Si le projet contient au moins un des tags, alors on l'ajoute aux matchs
+    console.log(project.filiere + '/' + filiere)
     if (!matchingProj.includes(project) && project.classe === classe && project.filiere === filiere) {
       matchingProj.push(project)
     }
@@ -172,10 +220,19 @@ app.post('/api/getprojects', (req, res) => {
   console.log('project req.body', req.body)
   console.log('project req.query', req.query)
   if (req.session.userId) {
-    res.json({
-      matchingProjects: getMatchingProjects(req.body.data.classe, req.body.data.filiere),
-      message: 'ok'
-    })
+    console.log(req.session.isAdmin)
+    if (req.session.isAdmin === true) {
+      res.json({
+        matchingProjects: projects,
+        message: 'ok'
+      })
+    } else {
+      res.json({
+        matchingProjects: getMatchingProjects(req.body.data.classe, req.body.data.filiere),
+        message: 'ok'
+      })
+    }
+    
   } else {
     req.session.userId = 0
     res.json({

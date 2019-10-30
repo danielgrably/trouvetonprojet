@@ -116,6 +116,7 @@ export default {
         .then((response) => {
           if (response.data.message === 'already connected') {
             this.setConnectionStatus(true, response.data.username)
+
           }
         })
     }

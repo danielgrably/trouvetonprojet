@@ -4,7 +4,7 @@
       <h2>Bonjour, {{username}} !</h2>
     </v-layout>
     <v-layout align-center justify-center>
-      Ces projets pourraient t'intéresser :
+      Ces projets correspondent à ton profil :
     </v-layout>
     <v-data-table
       :headers="headers"
@@ -36,13 +36,24 @@
                       <v-text-field v-model="editedItem.name" label="Nom du projet"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedItem.classe" label="Classe"></v-text-field>
+                      <v-select
+                      v-model="editedItem.classe"
+                      :items="['4A', '5A']"
+                      :rules="[v => !!v || 'Ce champ est obligatoire']"
+                      label="Classe"
+                      name="classe"
+                      required
+                      ></v-select>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedItem.filieres" label="Filière"></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedItem.creator" label="Filière"></v-text-field>
+                      <v-select
+                      v-model="editedItem.filiere"
+                      :items="['SI', 'SE']"
+                      :rules="[v => !!v || 'Ce champ est obligatoire']"
+                      label="Filière"
+                      name="filiere"
+                      required
+                      ></v-select>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field v-model="editedItem.description" label="Description"></v-text-field>
@@ -59,22 +70,7 @@
           </v-dialog>
         </v-toolbar>
       </template>
-      <template v-slot:item.action="{ item }">
-        <v-btn
-          small
-          class="mr-2"
-          @click="editItem(item)"
-        >
-          Editer
-        </v-btn>
-        <v-spacer></v-spacer>
-        <v-btn
-          small
-          @click="deleteItem(item)"
-        >
-          Supprimer
-        </v-btn>
-      </template>
+      
       <template v-slot:no-data>
         <v-btn color="primary" @click="getProjects">Reset</v-btn>
       </template>
@@ -104,7 +100,6 @@ export default {
       { text: 'Classe', value: 'classe' },
       { text: 'Filière', value: 'filiere' },
       { text: 'Description', value: 'description' },
-      { text: 'Actions', value: 'action', sortable: false }
     ],
     projects: [],
     editedIndex: -1,
@@ -121,7 +116,9 @@ export default {
       creator: '',
       filiere: '',
       description: ''
-    }
+    },
+    maClasse: '4A',
+    maFiliere: 'SI'
   }),
 
   computed: {
@@ -137,7 +134,8 @@ export default {
   },
 
   created () {
-    setTimeout(this.getProjects(), 500)
+    this.getAccountInfo()
+    setTimeout(this.getProjects, 500)
   },
 
   methods: {
@@ -154,28 +152,56 @@ export default {
 
     close () {
       this.dialog = false
-      setTimeout(() => {
-        this.editedItem = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
-      }, 300)
     },
 
     save () {
-      if (this.editedIndex > -1) {
-        Object.assign(this.projects[this.editedIndex], this.editedItem)
-      } else {
-        this.projects.push(this.editedItem)
-      }
-      this.close()
+      this.createProject(this.editedItem)
+      setTimeout(this.close, 700)
     },
 
+    // Envoie une requête pour créer un projet sur le backend
+    createProject (project) {
+      console.log('createproject')
+      this.axios.post('http://localhost:4000/api/createproject', {
+        name: project.name,
+        classe: project.classe,
+        creator: project.creator,
+        filiere: project.filiere,
+        description: project.description
+      })
+        .then((response) => {
+          if (response.data.message === 'project created') {
+            console.log('projet créé')
+            this.getProjects()
+          } else {
+            console.log('Cannot create project on backend')
+          }
+        })
+    },
+
+    getAccountInfo () {
+      this.axios
+        .post('http://localhost:4000/api/login', {
+          login: '',
+          password: ''
+        })
+        .then(response => {
+          if (response.data.message === 'already connected') {
+            this.maClasse = response.data.classe
+            this.maFiliere = response.data.filiere
+            console.log('avant ' + this.maClasse + this.maFiliere)
+          }
+        })
+    },
+
+    // Récupère les projets depuis le backend
     getProjects () {
-      let data = {
-        classe: '4A',
-        filiere: 'SI'
-      }
+      console.log('apres ' + this.maClasse + this.maFiliere)
       this.axios.post('http://localhost:4000/api/getprojects', {
-        data: data
+        data: {
+          classe: this.maClasse,
+          filiere: this.maFiliere
+        }
       })
         .then((response) => {
           if (response.data.message === 'ok') {
