@@ -7,13 +7,14 @@
           <v-btn icon @click="hide"><v-icon>mdi-close</v-icon></v-btn>
         </v-toolbar>
           <v-card-text >
-            <v-form ref="form" method="post" action="/api/login" id="signin" v-model="valid" lazy-validation>
+            <v-form ref="form" id="signin" v-model="valid" lazy-validation>
+              <v-label class="red" ><font color="red">{{message}}</font></v-label>
               <v-text-field
                 v-model="identifiant"
                 :counter="20"
                 :rules="idRules"
                 label="Identifiant"
-                name="name"
+                name="identifiant"
                 required
               ></v-text-field>
 
@@ -22,7 +23,7 @@
                 v-model="mdp"
                 :rules="mdpRules"
                 label="Mot de passe"
-                name="password"
+                name="mdp"
                 required
               ></v-text-field>
             </v-form>
@@ -35,6 +36,7 @@
 </template>
 
 <script>
+
 export default {
   data: () => ({
     absolute: true,
@@ -42,17 +44,31 @@ export default {
     identifiant: '',
     idRules: [
       v => !!v || 'Ce champ est obligatoire',
-      v => (v && v.length <= 20) || 'Le nom doit faire moins de 20 caractÃ¨res'
+      v => (v && v.length <= 20) || 'Le nom doit faire moins de 20 caractères'
     ],
     mdp: '',
     mdpRules: [v => !!v || 'Ce champ est obligatoire'],
+    message: ''
   }),
 
   methods: {
     validate () {
       if (this.$refs.form.validate()) {
         this.snackbar = true
-        signin.submit()
+        // Envoie une requête POST au serveur avec les infos d'identification, puis si elles sont correctes envoie un event de connexion au parent
+        this.axios.post('http://localhost:4000/api/login', {
+          login: this.identifiant,
+          password: this.mdp
+        })
+          .then((response) => {
+            if (response.data.message === 'connected' || response.data.message === 'already connected') {
+              this.message = ''
+              this.$emit('connect', true, response.data.username)
+              this.hide()
+            } else {
+              this.message = 'Login ou mot de passe incorrects.'
+            }
+          })
       }
     },
     resetValidation () {

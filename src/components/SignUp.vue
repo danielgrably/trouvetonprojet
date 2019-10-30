@@ -7,13 +7,14 @@
           <v-btn icon @click="hide"><v-icon>mdi-close</v-icon></v-btn>
         </v-toolbar>
           <v-card-text >
-            <v-form ref="form" method="get" action="/signup" id="signup" v-model="valid" lazy-validation>
+            <v-form ref="form" id="signup" v-model="valid" lazy-validation>
+              <v-label class="red" ><font color="red">{{message}}</font></v-label>
               <v-text-field
                 v-model="identifiant"
                 :counter="20"
                 :rules="idRules"
                 label="Identifiant"
-                name="name"
+                name="Identifiant"
                 required
               ></v-text-field>
 
@@ -22,7 +23,7 @@
                 v-model="mdp"
                 :rules="mdpRules"
                 label="Mot de passe"
-                name="password"
+                name="mdp"
                 required
               ></v-text-field>
 
@@ -40,7 +41,7 @@
                 :items="filieres"
                 :rules="[v => !!v || 'Ce champ est obligatoire']"
                 label="Filière"
-                name="filliere"
+                name="filiere"
                 required
               ></v-select>
             </v-form>
@@ -69,14 +70,28 @@ export default {
     select1: null,
     classes: ['4A', '5A'],
     select2: null,
-    filieres: ['SI', 'SE']
+    filieres: ['SI', 'SE'],
+    message: ''
   }),
 
   methods: {
     validate () {
       if (this.$refs.form.validate()) {
         this.snackbar = true
-        signup.submit()
+        this.axios.post('http://localhost:4000/api/newaccount', {
+          login: this.identifiant,
+          password: this.mdp,
+          classe: this.select1,
+          filiere: this.select2
+        })
+          .then((response) => {
+            if (response.data.message === 'account created') {
+              this.message = ''
+              this.hide()
+            } else {
+              this.message = 'Le compte existe déjà.'
+            }
+          })
       }
     },
     resetValidation () {
