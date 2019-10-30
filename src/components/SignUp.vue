@@ -78,7 +78,7 @@ export default {
     validate () {
       if (this.$refs.form.validate()) {
         this.snackbar = true
-        this.axios.post('http://localhost:4000/api/newaccount', {
+        this.axios.post('/api/newaccount', {
           login: this.identifiant,
           password: this.mdp,
           classe: this.select1,
