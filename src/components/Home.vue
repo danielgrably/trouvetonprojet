@@ -13,7 +13,7 @@
 export default {
   name: 'Home',
   props: {
-    username:{
+    username: {
       type: String,
       default: '[USER]'
     }
